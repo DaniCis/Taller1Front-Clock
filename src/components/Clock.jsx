@@ -1,9 +1,28 @@
+import { useState, useEffect } from "react"
+
 const Clock = () =>{
+    //Estados del componente para guardar la hora, minuto y segundo
+    const [hour, setHour] = useState();
+    const [minute, setMinute] = useState();
+    const [second, setSecond] = useState();
+
+    useEffect(() => {
+        //función para que extraiga la los valores de hora, minuto y segundo de la fecha actualizados cada segundo
+        const intervalo = setInterval(() => {
+            const fecha = new Date(); //extraer la fecha actual
+            setHour(fecha.getHours())
+            setMinute(fecha.getMinutes())
+            setSecond(fecha.getSeconds())
+        }, 1000);
+        return () => clearInterval(intervalo); //limpiar el resultando anterior antes de volver a ejecutar la función
+      }, []);
+
+    //se añade a cada manecilla una transformación para que vayan rotando en el eje Z el valor de la fecha transformado a grados      
     return(
         <div className="clock">
-            <div className="hand hour" data-hour-hand></div>
-            <div className="hand minute" data-minute-hand></div>
-            <div className="hand second" data-second-hand></div>
+            <div className="hand hour" style={{transform: `rotateZ(${hour * 30}deg)`}}></div>
+            <div className="hand minute" style={{transform: `rotateZ(${minute * 6}deg)`}}></div>
+            <div className="hand second" style={{transform: `rotateZ(${second * 6}deg)`}}></div>
             <div className="number number1">1</div>
             <div className="number number2">2</div>
             <div className="number number3">3</div>
